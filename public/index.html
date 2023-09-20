@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Form</title>
+    <style>
+      .container {
+        width: 80%;
+        margin: auto;
+        margin-top: 50px;
+      }
+      form {
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
+
+      input[type='text'],
+      input[type='email'],
+      #age {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;
+      }
+
+      input[type='submit'] {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+      }
+
+      input[type='submit']:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form id="contactForm">
+        <label for="name">Name:</label><br />
+        <input type="text" id="name" /><br />
+        <label for="email">Email:</label><br />
+        <input type="email" id="email" /><br />
+        <label for="age">age:</label><br />
+        <input id="age" type="number"></input><br />
+        <label for="status">status</label><br>  
+        <input id="status" style="        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;"></input><br />
+        <input type="submit" value="Send" />
+      </form>
+    </div>
+    <script>
+      const contactForm = document.getElementById('contactForm');
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const ageInput = document.getElementById('age');
+      const statusInput = document.getElementById('status');
+
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const age = parseInt(ageInput.value);
+
+// Check if age is less than 60
+if (age < 60) {
+  statusInput.value = 'Junior';
+} else {
+  statusInput.value = 'Senior';
+}
+        await fetch('/send-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: nameInput.value,
+            email: emailInput.value,
+            age: ageInput.value,
+            status: statusInput.value,
+          }),
+        });
+        nameInput.value = '';
+        emailInput.value = '';
+        ageInput.value = '';
+        
+      });
+    </script>
+  </body>
+</html>
